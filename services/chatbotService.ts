@@ -8,7 +8,7 @@ import {AstroService} from "./astroService";
 
 
 export let chatBotList: ChatBot[] = [
-    new ChatBot('Google Assistant', [
+    new ChatBot('Météo Assistant', [
 
         new Action('Google Search', 'search on google wath you want', ['dis google', 'ok google'], GoogleSearch.searchOnGoogle, null),
 
@@ -17,20 +17,21 @@ export let chatBotList: ChatBot[] = [
         new Action('disponible', 'appeler les services disponibles', ['services'], (param: string, callback, chatbot: ChatBot) => {
             return `Le service ${chatbot.name} est disponible`
         }, null)
-    ], 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Google_Assistant_logo.svg/1024px-Google_Assistant_logo.svg.png'),
+    ], 'https://m.media-amazon.com/images/I/61nuuPxUvaL.png'),
 
-    new ChatBot('Chat GPT', [
+    new ChatBot('Astro Assistant', [
 
-        new Action('Astro', 'avoir les astres du jour', ['astro'], AstroService.getAstro, AstroService.dataToString),
+        new Action('Horoscope', 'avoir les astres du jour', ['astro', 'horoscope'], AstroService.getAstro, AstroService.astroDataToString),
+        new Action('Signe astro', 'avoir son signe par rapport à sa date de naissance', ['signe astro'], AstroService.getAstroSigne, AstroService.astroSigneToString),
         new Action('disponible', 'appeler les services disponibles', ['services'], (param: string, callback, chatbot: ChatBot) => {
             return `Le service ${chatbot.name} est disponible`
         }, null)
-    ], 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png'),
-    new ChatBot('Notion', [
+    ], 'https://upload.wikimedia.org/wikipedia/commons/f/f4/ASTRO_LOGO.png?20210628024211'),
+    new ChatBot('Cycling Ranking Assistant', [
         new Action('disponible', 'appeler les services disponibles', ['services'], (param: string, callback, chatbot: ChatBot) => {
             return `Le service ${chatbot.name} est disponible`
         }, null)
-    ], 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png')
+    ], 'https://logowik.com/content/uploads/images/free-vector-bicycle-and-cyclist617.logowik.com.webp')
 ]
 
 export function searchCommand(messageContent: string) {
@@ -38,7 +39,7 @@ export function searchCommand(messageContent: string) {
         .filter(chatbot => chatbot.enable)
         .forEach(chatbot => {
             chatbot.action.forEach(action => {
-                const commandFound = action.getKeys().find(key => messageContent.includes(key));
+                const commandFound = action.getKeys().find(key => messageContent.includes(key) && messageContent.indexOf(key) === 0);
                 if (commandFound) {
                     const param: string = splitOnFirst(messageContent, commandFound)[1].trim();
                     const actionResult = action.execute(param, (error, data) => {
@@ -51,7 +52,8 @@ export function searchCommand(messageContent: string) {
                         sendChatbotMessage(message, chatbot)
 
                     }, chatbot);
-                    actionResult ? sendChatbotMessage(actionResult, chatbot) : null;
+                    const message = actionResult ? action.format != null ? action.formatData(actionResult, param) : actionResult : null;
+                    actionResult ? sendChatbotMessage(message, chatbot) : null;
                 }
             });
         });
