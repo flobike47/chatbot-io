@@ -31,4 +31,13 @@ export class ChatBot {
         localStorage.setItem(this.name, this.enable.toString());
     }
 
+    help = () => {
+        const helpMessage = `Pour le chatbot ${this.name}, les commandes disponible sont les suivantes: </br> `+this.action.map(action => {
+            if (action.name != 'disponible'){
+                return `<li> ${action.getHelp()} </li>`
+            }
+        }).join('\n')
+        return helpMessage
+    }
+
 }

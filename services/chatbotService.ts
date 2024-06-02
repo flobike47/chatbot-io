@@ -10,9 +10,7 @@ import {AstroService} from "./astroService";
 export let chatBotList: ChatBot[] = [
     new ChatBot('Météo Assistant', [
 
-        new Action('Google Search', 'search on google wath you want', ['dis google', 'ok google'], GoogleSearch.searchOnGoogle, null),
-
-        new Action('get weather', 'get the weather of a city', ['weather', 'get weather', 'meteo'], WeatherService.getWeather, WeatherService.dataToString),
+        new Action('météo', 'avoir la météo d\'une ville', ['weather', 'get weather', 'meteo'], WeatherService.getWeather, WeatherService.dataToString, 'la ville'),
 
         new Action('disponible', 'appeler les services disponibles', ['services'], (param: string, callback, chatbot: ChatBot) => {
             return `Le service ${chatbot.name} est disponible`
@@ -38,6 +36,9 @@ export function searchCommand(messageContent: string) {
     chatBotList
         .filter(chatbot => chatbot.enable)
         .forEach(chatbot => {
+            if (messageContent === 'help') {
+                sendChatbotMessage(chatbot.help(), chatbot);
+            }
             chatbot.action.forEach(action => {
                 const commandFound = action.getKeys().find(key => messageContent.includes(key) && messageContent.indexOf(key) === 0);
                 if (commandFound) {
