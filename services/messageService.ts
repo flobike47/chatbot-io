@@ -34,6 +34,7 @@ export const saveMessage = (message: Message) => {
 
 
 const loadMessages = () => {
+    jSuites.loading.show();
     const savedMessages = localStorage.getItem('messageList');
     if (savedMessages) {
         messageList = JSON.parse(savedMessages);
@@ -41,6 +42,9 @@ const loadMessages = () => {
         // Scroll to the bottom of the chat
         scrollToBottom();
     }
+    jSuites.loading.hide();
+
+
 }
 loadMessages();
 
