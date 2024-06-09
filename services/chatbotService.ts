@@ -2,7 +2,7 @@ import {ChatBot} from "../models/chatBot";
 import {Action} from "../models/action";
 import {GoogleSearch} from "./googleSearch";
 import {Message} from "../models/message";
-import {saveMessage} from "./messageService";
+import {enableInput, saveMessage} from "./messageService";
 import {WeatherService} from "./weatherService";
 import {AstroService} from "./astroService";
 import {CyclingService} from "./cyclingService";
@@ -48,6 +48,7 @@ export function searchCommand(messageContent: string, index: number = 0) {
     let chatbotEnable: ChatBot[] = chatBotList.filter(chatbot => chatbot.enable);
 
     if (index >= chatbotEnable.length) {
+        enableInput();
         return;
     }
 
@@ -72,8 +73,7 @@ export function searchCommand(messageContent: string, index: number = 0) {
                 sendChatbotMessage(message, chatbotEnable[index])
 
             }, chatbotEnable[index]);
-            const message = actionResult ? action.format != null ? action.formatData(actionResult, param) : actionResult : null;
-            actionResult ? sendChatbotMessage(message, chatbotEnable[index]) : null;
+            actionResult ? sendChatbotMessage(action.format != null ? action.formatData(actionResult, param) : actionResult, chatbotEnable[index]) : null;
 
         }
     });

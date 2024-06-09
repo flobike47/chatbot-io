@@ -12,6 +12,7 @@ const sendButton = document.querySelector("#send-message");
 sendButton.addEventListener('click', () => {
     const message = document.querySelector('#message-content').value.trim()
     if (message) {
+        disableInput();
         saveMessage(new Message(message, new Date().toDateString() + ' ' + new Date().getHours() + ':' + new Date().getMinutes()));
         setTimeout(() => {
             searchCommand(message)
@@ -63,6 +64,16 @@ async function scrollToBottom() {
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function disableInput() {
+    document.querySelector('#message-content').setAttribute('disabled', 'disabled');
+    document.querySelector('#send-message').setAttribute('disabled', 'disabled');
+}
+
+export function enableInput() {
+    document.querySelector('#message-content').removeAttribute('disabled');
+    document.querySelector('#send-message').removeAttribute('disabled');
 }
 
 
