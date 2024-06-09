@@ -1,6 +1,8 @@
 import {Message} from "../models/message";
 import {messages} from "../components/messages";
 import {searchCommand} from "./chatbotService";
+import gsap from "gsap";
+
 
 export let messageList: Message[] = []
 
@@ -11,7 +13,9 @@ sendButton.addEventListener('click', () => {
     const message = document.querySelector('#message-content').value.trim()
     if (message) {
         saveMessage(new Message(message, new Date().toDateString() + ' ' + new Date().getHours() + ':' + new Date().getMinutes()));
-        searchCommand(message)
+        setTimeout(() => {
+            searchCommand(message)
+        }, 1000)
         document.querySelector('#message-content').value = '';
     }
 })
@@ -27,9 +31,11 @@ document.querySelector('#message-content').addEventListener('keypress', (e) => {
 
 export const saveMessage = (message: Message) => {
     messageList.push(message)
-    document.querySelector('#messages').innerHTML = messages(messageList);
+    document.querySelector('#messages').innerHTML += message.html;
     localStorage.setItem('messageList', JSON.stringify(messageList));
     scrollToBottom();
+    animateMessageContent(message.id);
+
 }
 
 
@@ -56,5 +62,21 @@ async function scrollToBottom() {
 }
 
 function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+function animateMessageContent(messageId) {
+
+    let h1 = document.getElementById(messageId);
+
+
+    gsap.set(h1, {perspective: 500});
+    let $tween = gsap.from(h1, {
+        duration: 0.5,
+        scale: 4,
+        autoAlpha: 0,
+        ease: "back",
+        stagger: 0.02
+    });
 }
