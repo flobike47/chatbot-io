@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  chatbot:
+    container_name: chatbot
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "1234:80"
+    networks:
+      - default
