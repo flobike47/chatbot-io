@@ -81,13 +81,12 @@ function animateMessageContent(messageId) {
 
     let h1 = document.getElementById(messageId);
 
-
     gsap.set(h1, {perspective: 500});
     let $tween = gsap.from(h1, {
         duration: 0.5,
-        scale: 4,
+        scale: 2,
         autoAlpha: 0,
-        ease: "back",
+        ease: "front",
         stagger: 0.02
     });
 }
