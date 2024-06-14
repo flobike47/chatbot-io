@@ -50,7 +50,7 @@ export class CyclingService {
 
         //build string from this response
         return data != null ? ` Voici les informations de ${data["riderName"].replaceAll("-", " ")} :
-            - Il est né le ${data["dateOfBirth"]} et il a ${data["age"]} ans. </br>
+            - Il est né le ${CyclingService.convertToFrenchDate(data["dateOfBirth"])} et il a ${data["age"]} ans. </br>
             - Sa taille est de ${data["height"]} mètres. </br>
             - Il pèse ${data["weight"]} kg. </br>
             - Sa nationalité est ${data["nationality"]}. </br>
@@ -59,6 +59,31 @@ export class CyclingService {
               &nbsp;&nbsp;&nbsp;- Time Trial: ${data["relativeStrength"][0]["timeTrial"]} </br>
               &nbsp;&nbsp;&nbsp;- Sprint: ${data["relativeStrength"][0]["sprint"]} </br>
               &nbsp;&nbsp;&nbsp;- Climber: ${data["relativeStrength"][0]["climber"]}` : `Ce coureur n\'a pas été trouvé.`;
+    }
+
+    static convertToFrenchDate(englishDate) {
+        // Dictionary for month names in French
+        const monthNamesFrench = [
+            "janvier", "février", "mars", "avril", "mai", "juin",
+            "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+        ];
+
+        // Remove the ordinal suffix (st, nd, rd, th)
+        const dateWithoutSuffix = englishDate.replace(/(\d+)(st|nd|rd|th)/, '$1');
+
+        // Parse the date
+        const dateParts = dateWithoutSuffix.split(' ');
+        const day = dateParts[0];
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        // Get the month index
+        const monthIndex = new Date(`${month} 1, ${year}`).getMonth();
+
+        // Convert to French date format
+        const frenchDate = `${day} ${monthNamesFrench[monthIndex]} ${year}`;
+
+        return frenchDate;
     }
 
 }

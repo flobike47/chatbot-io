@@ -1,4 +1,4 @@
-FROM node:19.9-slim as build
+FROM node:18.3 as build
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ RUN npm run build
 
 # Stage 2
 
-FROM httpd:alpine3.20
+FROM httpd:2.4
 
 COPY --from=build /usr/src/app/dist /usr/local/apache2/htdocs
 

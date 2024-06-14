@@ -38,6 +38,6 @@ export class Action {
     }
 
     getHelp(){
-        return `<U>${this.name}</U> : ${this.description} pour l'uliliser tapez ${this.keys.map(key =>'<strong>'+ key + '</strong> or ').join('')} suivi de ${this.parameterRegex}`
+        return `<U>${this.name}</U> : ${this.description} pour l'uliliser tapez ${this.keys.map((key, index) => index != this.keys.length-1 ? '<strong>'+ key + '</strong> ou ' : '<strong>'+ key + '</strong> ').join('')} ${this.parameterRegex ? 'suivi de '+this.parameterRegex: ''}`
     }
 }

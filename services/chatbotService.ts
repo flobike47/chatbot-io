@@ -11,9 +11,9 @@ import {CyclingService} from "./cyclingService";
 export let chatBotList: ChatBot[] = [
     new ChatBot('Météo Assistant', [
 
-        new Action('météo', 'avoir la météo d\'une ville', ['weather', 'get weather', 'meteo'], WeatherService.getWeather, WeatherService.dataToString, 'la ville'),
+        new Action('Météo', 'avoir la météo d\'une ville', ['weather', 'get weather', 'meteo'], WeatherService.getWeather, WeatherService.dataToString, 'la ville (par exemple: meteo Agen)'),
 
-        new Action('météo', 'avoir la météo de demain ', ['tomorrow weather', 'demain meteo'], WeatherService.getTomorrowWeather, WeatherService.tomorrowDataToString, 'la ville'),
+        new Action('météo de demain', 'avoir la météo de demain ', ['tomorrow weather', 'demain meteo'], WeatherService.getTomorrowWeather, WeatherService.tomorrowDataToString, 'la ville'),
 
         new Action('disponible', 'appeler les services disponibles', ['services'], (param: string, callback, chatbot: ChatBot) => {
             return `Le service ${chatbot.name} est disponible`
@@ -23,9 +23,9 @@ export let chatBotList: ChatBot[] = [
 
     new ChatBot('Astro Assistant', [
 
-        new Action('Horoscope', 'avoir les astres du jour', ['astro', 'horoscope'], AstroService.getAstro, AstroService.astroDataToString),
+        new Action('Horoscope', 'avoir les astres du jour', ['astro', 'horoscope'], AstroService.getAstro, AstroService.astroDataToString, 'votre signe astrologique'),
 
-        new Action('Signe astro', 'avoir son signe par rapport à sa date de naissance', ['signe astro'], AstroService.getAstroSigne, AstroService.astroSigneToString),
+        new Action('Signe astro', 'avoir son signe par rapport à sa date de naissance', ['signe astro'], AstroService.getAstroSigne, AstroService.astroSigneToString, 'votre date de naissance au format dd-mm-yyyy (par exemple: signe astro 05-03-2001)'),
 
         new Action('disponible', 'appeler les services disponibles', ['services'], (param: string, callback, chatbot: ChatBot) => {
             return `Le service ${chatbot.name} est disponible`
@@ -38,7 +38,7 @@ export let chatBotList: ChatBot[] = [
             return `Le service ${chatbot.name} est disponible`
         }, null),
 
-        new Action('rider', 'avoir les informations d\'un coureur', ['rider info', 'cyclist info'], CyclingService.getRiderInfo, CyclingService.riderDataToString),
+        new Action('Cycliste stats', 'avoir les informations d\'un coureur', ['rider info', 'cycliste info'], CyclingService.getRiderInfo, CyclingService.riderDataToString, 'du nom du cycliste (par exemple: cycliste info wout van aert)'),
 
     ], 'https://logowik.com/content/uploads/images/free-vector-bicycle-and-cyclist617.logowik.com.webp')
 ]
